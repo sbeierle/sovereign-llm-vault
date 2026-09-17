@@ -29,3 +29,19 @@ text
 
 ## Lizenz
 MIT License. Frei verwendbar für Managed Service Provider (MSPs) und IT-Systemhäuser.
+
+## Verifizierte Benchmarks (Live-Messungen)
+
+### Fall 1: DSGVO, NIS2 & Quellcode-Leck (Stresstest mit OCR-Fehlern)
+- **Prompt-Ingestion:** 1.421,2 T/s
+- **Generierung:** 51,9 T/s
+- **Laufzeit:** 11,96 s
+
+![Fall 1 Benchmark](media/benchmark_nis2_stresstest.png)
+
+### Fall 2: Steuerforensik & AfA-Audit (§ 6 EStG / vGA)
+- **Prompt-Ingestion:** 1.369,5 T/s
+- **Generierung:** 50,1 T/s
+- **Laufzeit:** 23,87 s
+
+![Fall 2 Benchmark](media/benchmark_tax_forensics.png)
