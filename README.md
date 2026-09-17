@@ -1,63 +1,62 @@
 # Sovereign LLM Vault Appliance
 
-Autarke, air-gapped On-Premise Dokumenten-Audit Appliance für Berufsgeheimnisträger (§ 203 StGB, NIS2, DSGVO).
+Autarke On-Premise Dokumenten-Audit Pipeline für Berufsgeheimnisträger (§ 203 StGB, NIS2, DSGVO).
 
-## Key Facts & Performance
+## Architektur & Scope-Abgrenzung
+
+> **Hinweis zur Testumgebung:**  
+> Die hier dokumentierten Benchmarks und Logs wurden auf einer **Referenz-Entwicklungs-Workstation** (AMD Ryzen 9 7950X3D / RX 7900 XTX) unter Live-Bedingungen erhoben.  
+> 
+> * **Software-Ebene (Demonstriert):** Der Inferenz-Dienst ist strikt an das lokale Loopback-Interface gebunden (`127.0.0.1:8080`). Es findet zu keinem Zeitpunkt ausgehender Datenverkehr statt.
+> * **Ziel-Deployment (Produktiv):** Schlüsselfertige, physisch air-gapped Bare-Metal-Appliance ohne externe Netzwerkanbindung (Inbound/Outbound via dediziertem Kanzlei-Drop-Share oder isoliertem Storage).
+
+---
+
+## Warum Qwen 2.5 Coder 14B für Dokumenten-Audits?
+
+Die Wahl eines Code-fokussierten Instruct-Modells für juristische und steuerliche Dokumentenanalysen ist eine bewusste Architekturentscheidung:
+1. **Strikte Schema-Treue:** Code-Modelle halten komplexe JSON-Strukturen und Datentypen deterministisch ein und neigen signifikant seltener zu Markdown-Halluzinationen oder Formatierungsfehlern.
+2. **Logische Bedingungsprüfung:** Die Modell-Architektur ist für die Analyse verschachtelter Abhängigkeiten optimiert (z. B. Auflösung kollidierender Fristen nach NIS2 vs. interne Kanzleivermerke).
+3. **Parametrisches Wissen:** Der Trainingskorpus umfasst breites europäisches und deutsches Normenwissen (DSGVO, § 203 StGB, EStG).
+
+---
+
+## Performance & Live-Benchmarks
+
 - **Inferenz-Engine:** Native `llama-server` Kompilierung mit FlashAttention-2 & ROCm-Hardwarebeschleunigung.
-- **Hardware-Target:** AMD Radeon RX 7900 XTX (24 GB VRAM) auf Bare-Metal Linux.
-- **Modell:** Qwen 2.5 Coder 14B Instruct (GGUF Q4_K_M).
-- **Prompt-Ingestion-Rate:** > 1.400 Tokens/Sekunde.
-- **Generierungs-Geschwindigkeit:** ~50 Tokens/Sekunde.
-- **Netzwerk-Isolation:** Striktes Loopback (`127.0.0.1:8080`), 0 Byte Cloud-Abfluss, voll funktionsfähig ohne Internetverbindung.
+- **Hardware:** AMD Radeon RX 7900 XTX (24 GB VRAM) auf Bare-Metal Linux.
+- **Prompt-Ingestion-Rate:** > 1.350 – 1.420 Tokens/Sekunde.
+- **Generierungs-Geschwindigkeit:** ~50–52 Tokens/Sekunde.
+- **VRAM-Footprint:** Konstant 11,5 GB (stabile Allokation ohne Memory-Leaks).
 
----
-
-## Live-Benchmarks & Nachweise
-
-### Fall 1: DSGVO, NIS2 & Quellcode-Leck (Stresstest mit OCR-Fehlern)
+### Benchmark-Fall 1: DSGVO, NIS2 & Quellcode-Leck (Stresstest mit OCR-Fehlern)
 - **Prompt-Ingestion:** 1.421,2 T/s | **Generierung:** 51,9 T/s | **Laufzeit:** 11,96 s
-- **Ergebnis:** Behördliche 72h-Notfrist isoliert, US-Haftungsbegrenzung ($500) und unzulässiges Modell-Training als Kritisch bewertet.
+- **Audit-Ergebnis:** Behördliche Notfrist (BSI 72h) erkannt, fehlerhafte interne Kanzleinotiz („Oktober reicht“) verworfen, Haftungsdeckelung ($500) isoliert.
 
 <p align="center">
-<img src="media/benchmark_nis2_stresstest.png" alt="Stresstest NIS2 Benchmark" width="95%">
+  <img src="media/benchmark_nis2_stresstest.png" alt="Stresstest NIS2 Benchmark" width="95%">
 </p>
 
-### Fall 2: Steuerforensik & AfA-Audit (§ 6 EStG / vGA)
+### Benchmark-Fall 2: Steuerforensik & AfA-Audit (§ 6 EStG / vGA)
 - **Prompt-Ingestion:** 1.369,5 T/s | **Generierung:** 50,1 T/s | **Laufzeit:** 23,87 s
-- **Ergebnis:** Anschaffungsnahe Herstellungskosten (§ 6 Abs. 1 Nr. 1a EStG) erkannt, Zahlungsflüsse extrahiert, Fristenkollision getrennt.
+- **Audit-Ergebnis:** Anschaffungsnahe Herstellungskosten (§ 6 Abs. 1 Nr. 1a EStG) extrahiert, Sanierungsaufwand getrennt, Zahlungsströme tabelliert.
 
 <p align="center">
-<img src="media/benchmark_tax_forensics.png" alt="Steuerforensik Benchmark" width="95%">
+  <img src="media/benchmark_tax_forensics.png" alt="Steuerforensik Benchmark" width="95%">
 </p>
 
 ---
 
-## Video-Walkthrough
-Die vollständige Terminal-Aufzeichnung der Inferenz und der Systemauslastung (`nvtop` / `systemd`) ist im Repository hinterlegt:
-
-▶️ **[Video ansehen / herunterladen: `media/benchmark_proof_walkthrough.webm`](media/benchmark_proof_walkthrough.webm)**
-
----
-
-## Architektur
-text
-[ Netzwerklaufwerk: /srv/vault/inbox/ ]
-│
-▼ (Atomarer File-Watchdog)
-[ vault_watchdog.py (Injects Governance & Audit Prompts) ]
-│
-▼ (Loopback REST POST /v1/chat/completions)
-[ sovereign-llm.service (Bare-Metal llama-server @ RX 7900 XTX) ]
-│
-▼ (Deterministische Extraktion)
-[ /srv/vault/outbox/xyz_audit.json ] & [ /srv/vault/archive/ ]
-## Repository-Struktur
-text
+## Deployment & Komponenten
+```text
 .
 ├── media/               # Benchmark-Screenshots und Videoaufzeichnung
 ├── systemd/             # Init-Units für llama-server und Watchdog-Daemon
 ├── scripts/             # Gehärteter Watchdog mit atomarer Dateiverarbeitung
 ├── benchmarks/          # Synthetische Testakten und JSON-Audit-Outputs
 └── README.md
-## Lizenz
-MIT License. Frei verwendbar für Managed Service Provider (MSPs) und IT-Systemhäuser.
+Kommerzieller Kontext & Support
+
+Die in diesem Repository bereitgestellten Skripte stehen unter der MIT-Lizenz.
+
+Für Managed Service Provider (MSPs) und IT-Systemhäuser: Die Implementierung gehärteter Turnkey-Appliances (Hardware-Dimensionierung, ROCm-Integration, kundenspezifische Audit-Profile und SLA-Wartung) wird als Dienstleistung / Whitelabel-Architektur realisiert.
