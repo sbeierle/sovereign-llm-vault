@@ -1,0 +1,31 @@
+[SYNTHETISCHER BENCHMARK-DATENSATZ - KEINE ECHTDATEN - STRESSTEST #2026-MULTI-ERROR]
+Test-Instanz: Muster-Kanzlei Dr. Fiktiv & Partner PartG mbB
+Aktenzeichen: STRESS-994/26-AUDIT
+Datum: 17. September 2026
+
+BETREFF:
+Simulierter Mandanten-Krisenfall: Multi-Vendor Schatten-KI & Quellcode-/Patent-Leck
+
+I. SACHVERHALT & OCR-FRAGMENTE (ROHDATEN):
+Die Mandantin "Apex-Synthetics Automotive SE" (Stuttgart) hat durch ihre Softwareabteilung unautorisiert
+proprietäre Steuerungs-Quellcodes (inkl. hardcodierter API-Keys und interner CAN-Bus-Telemetrie-Rohdaten)
+an zwei externe Dienste transferiert:
+1. "Transatlantic Neural Sync LLC" (Austin, Texas, USA) ueber unverschluesselte REST-Endpunkte zur Code-Refaktorierung.
+2. "DeepData Analytics Pte." (Singapur) zur statistischen Auswertung von Crash-Test-Dummys (personenbeziehbare Biometrie-Daten von Testfahrern, Art. 9 DSGVO).
+
+OCR-Scan-Auszug Vertragspartner (Transkriptionsfehler enthalten):
+"D4tenverarb3itung erf0lgt auf Servern in Drittstaendern ohne Standard Contractual Clauses (SCC). Ein Auftragsverarbeitungsvertrag (AVV/DPA) wurd3 nicht unterz3ichnet, da der Abteilungsleiter den Free-Tier-Account nutzte."
+
+II. WIDERSPRÜCHLICHE FRISTEN & BEHÖRDEN-DRUCK:
+- Im Anschreiben der Aufsichtsbehörde (LfDI Baden-Württemberg) vom 11.09.2026 wird eine Stellungnahme bis zum 25. September 2026 gefordert.
+- Im nachgereichten Telefax der Bundesnetzagentur / BSI (NIS2-Vorfallsmeldung) wird bezüglich der kritischen Telemetrie-Infrastruktur eine Frist von "innerhalb von 72 Stunden nach Kenntniserlangung" (Kenntnis am 16.09.2026 um 14:00 Uhr -> Notfrist: 19.09.2026, 14:00 Uhr) postuliert.
+- In einem internen Vermerk vermerkt der Assessor fälschlicherweise: "Frist unkritisch, reicht bis Ende Oktober 2026."
+
+III. KLAUSELWIRRWARR (AGB-AUSZUG TRANSATLANTIC NEURAL SYNC LLC):
+"Section 18.2 - Governing Law & Limitation:
+Customer agrees that provider shall have zero liability for consequential or statutory privacy damages under EU GDPR or NIS2. Any maximum liability is capped at $500 total. Exclusive venue is Travis County, Texas. Provider reserves the right to retain and fine-tune foundation models using all customer telemetry data."
+
+IV. RECHTSAUFTRAG:
+1. Auflösung der Fristenkollision (Notfrist bestimmen).
+2. Normenkonflikte isolieren (§ 203 StGB Berufsgeheimnis, Art. 9/28 DSGVO, NIS2 Meldepflicht).
+3. Prüfung der Haftungsbegrenzung ($500-Klausel und Modell-Training mit Mandantendaten).

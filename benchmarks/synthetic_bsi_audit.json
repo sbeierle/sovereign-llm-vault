@@ -1,0 +1,38 @@
+{
+  "dokumenten_typ": "Mandantenkorrespondenz",
+  "risiko_analyse": {
+    "risiko_level": "Kritisch",
+    "schadenspotenzial": "Das Dokument beschreibt eine Situation, in der vertrauliche und personenbezogene Daten unautorisiert an externe Dienste übertragen wurden. Dies kann zu schwerwiegenden rechtlichen Konsequenzen und Datenschutzverletzungen führen.",
+    "normen_konflikte": [
+      "§ 203 StGB (Berufsgeheimnis)",
+      "DSGVO Art. 9 (Verarbeitung besonderer kategorischer Daten)",
+      "NIS2 (Netzwerksicherheitsrichtlinie)"
+    ]
+  },
+  "extraktions_tabelle": {
+    "Fristen": {
+      "LfDI Baden-Württemberg": "25. September 2026",
+      "Bundesnetzagentur / BSI": "19.09.2026, 14:00 Uhr",
+      "Internes Vermerk": "Ende Oktober 2026"
+    },
+    "Parteien": {
+      "Mandantin": "Apex-Synthetics Automotive SE",
+      "Externe Dienste": [
+        "Transatlantic Neural Sync LLC",
+        "DeepData Analytics Pte."
+      ]
+    },
+    "Geldbetraege": {
+      "Haftungsbegrenzung": "$500"
+    },
+    "Haftungsklauseln": {
+      "Transatlantic Neural Sync LLC": "Section 18.2 - Governing Law & Limitation"
+    }
+  },
+  "handlungsempfehlung": [
+    "Überprüfen Sie die Fristen und bestimmen Sie die kritischste Notfrist.",
+    "Isolieren Sie die relevanten Normenkonflikte und erstellen Sie eine rechtliche Beratung.",
+    "Überprüfen Sie die Haftungsbegrenzung und die Verwendung der Mandantendaten im Modell-Training.",
+    "Berichten Sie den Sachbearbeiter über die erforderlichen Maßnahmen und die notwendige rechtliche Unterstützung."
+  ]
+}

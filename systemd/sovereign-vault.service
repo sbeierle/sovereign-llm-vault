@@ -1,0 +1,15 @@
+[Unit]
+Description=Sovereign Vault Watchdog Daemon
+After=network.target sovereign-llm.service
+Wants=sovereign-llm.service
+
+[Service]
+Type=simple
+User=predator
+WorkingDirectory=/home/predator
+ExecStart=/usr/bin/python3 /home/predator/vault_watchdog.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
