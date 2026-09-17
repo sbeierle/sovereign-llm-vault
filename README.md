@@ -12,11 +12,28 @@ Autarke On-Premise Dokumenten-Audit Pipeline für Berufsgeheimnisträger (§ 203
 
 ---
 
+## Funktionsweise: Zero-Touch Audit-Logik (Config Carriers)
+
+Der Endanwender in der Kanzlei oder Steuerberatung interagiert weder mit Prompts noch mit APIs: Er legt lediglich Dokumente per Drag & Drop in das Verzeichnis `/srv/vault/inbox/`.
+
+Der im Hintergrund laufende Daemon (`vault_watchdog.py`) fängt die Datei atomar ab und injiziert den festen forensischen Governance-Standard in die lokale Loopback-Schnittstelle:
+
+<p align="center">
+  <img src="media/system_prompt_governance.png" alt="Forensischer System-Prompt" width="95%">
+</p>
+
+### Was diese Steuerlogik sicherstellt:
+1. **Deterministisches Framing:** Das Modell wird auf die Rolle des forensischen Auditors festgelegt. Generisches Füllmaterial wird eliminiert.
+2. **Erzwungene Risikoeinstufung:** Pflichtkollisionen (§ 203 StGB, DSGVO Art. 9, BSI-Meldepflichten) werden isoliert und als Key-Value erfasst.
+3. **Striktes JSON ohne Markdown-Hülle:** Die Ausgabe landet maschinenlesbar in `/srv/vault/outbox/` und kann direkt in Kanzleisoftware oder Archivsysteme importiert werden.
+
+---
+
 ## Warum Qwen 2.5 Coder 14B für Dokumenten-Audits?
 
 Die Wahl eines Code-fokussierten Instruct-Modells für juristische und steuerliche Dokumentenanalysen ist eine bewusste Architekturentscheidung:
-1. **Strikte Schema-Treue:** Code-Modelle halten komplexe JSON-Strukturen und Datentypen deterministisch ein und neigen signifikant seltener zu Markdown-Halluzinationen oder Formatierungsfehlern.
-2. **Logische Bedingungsprüfung:** Die Modell-Architektur ist für die Analyse verschachtelter Abhängigkeiten optimiert (z. B. Auflösung kollidierender Fristen nach NIS2 vs. interne Kanzleivermerke).
+1. **Strikte Schema-Treue:** Code-Modelle halten komplexe JSON-Strukturen und Datentypen deterministisch ein und neigen signifikant seltener zu Syntaxfehlern.
+2. **Logische Bedingungsprüfung:** Die Modell-Architektur ist für die Analyse verschachtelter Bedingungen optimiert (z. B. Auflösung kollidierender Fristen nach NIS2 vs. interne Kanzleivermerke).
 3. **Parametrisches Wissen:** Der Trainingskorpus umfasst breites europäisches und deutsches Normenwissen (DSGVO, § 203 StGB, EStG).
 
 ---
@@ -31,7 +48,7 @@ Die Wahl eines Code-fokussierten Instruct-Modells für juristische und steuerlic
 
 ### Benchmark-Fall 1: DSGVO, NIS2 & Quellcode-Leck (Stresstest mit OCR-Fehlern)
 - **Prompt-Ingestion:** 1.421,2 T/s | **Generierung:** 51,9 T/s | **Laufzeit:** 11,96 s
-- **Audit-Ergebnis:** Behördliche Notfrist (BSI 72h) erkannt, fehlerhafte interne Kanzleinotiz („Oktober reicht“) verworfen, Haftungsdeckelung ($500) isoliert.
+- **Audit-Ergebnis:** Behördliche Notfrist (BSI 72h) erkannt, fehlerhafte interne Kanzleinotiz verworfen, Haftungsdeckelung ($500) isoliert.
 
 <p align="center">
   <img src="media/benchmark_nis2_stresstest.png" alt="Stresstest NIS2 Benchmark" width="95%">
@@ -47,10 +64,17 @@ Die Wahl eines Code-fokussierten Instruct-Modells für juristische und steuerlic
 
 ---
 
+## Video-Walkthrough
+Die vollständige Terminal-Aufzeichnung der Inferenz und der Systemauslastung (`nvtop` / `systemd`) ist im Repository hinterlegt:
+
+▶️ **[Video ansehen / herunterladen: media/benchmark_proof_walkthrough.webm](media/benchmark_proof_walkthrough.webm)**
+
+---
+
 ## Deployment & Komponenten
 ```text
 .
-├── media/               # Benchmark-Screenshots und Videoaufzeichnung
+├── media/               # Benchmark-Screenshots, System-Prompt und Video
 ├── systemd/             # Init-Units für llama-server und Watchdog-Daemon
 ├── scripts/             # Gehärteter Watchdog mit atomarer Dateiverarbeitung
 ├── benchmarks/          # Synthetische Testakten und JSON-Audit-Outputs
