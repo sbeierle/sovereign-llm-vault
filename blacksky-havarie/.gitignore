@@ -1,9 +1,0 @@
-models
-results/models/
-*.pt
-results/*.pt
-__pycache__/
-*.pyc
-*.webm
-*.mp4
-venv*/
